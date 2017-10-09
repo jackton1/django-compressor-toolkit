@@ -20,14 +20,14 @@ class CompressorToolkitConfig(AppConfig):
     NODE_SASS_BIN = getattr(
         settings,
         'COMPRESS_NODE_SASS_BIN',
-        join_path('node_modules', '.bin', 'node-sass') if LOCAL_NPM_INSTALL else 'node-sass'
+        os.path.join('node_modules', '.bin', 'node-sass') if LOCAL_NPM_INSTALL else 'node-sass'
     )
 
     # postcss executable
     POSTCSS_BIN = getattr(
         settings,
         'COMPRESS_POSTCSS_BIN',
-        join_path('node_modules', '.bin', 'postcss') if LOCAL_NPM_INSTALL else 'postcss'
+        os.path.join('node_modules', '.bin', 'postcss') if LOCAL_NPM_INSTALL else 'postcss'
     )
 
     # Browser versions config for Autoprefixer
@@ -36,32 +36,34 @@ class CompressorToolkitConfig(AppConfig):
     # Custom SCSS transpiler command
     SCSS_COMPILER_CMD = getattr(settings, 'COMPRESS_SCSS_COMPILER_CMD', (
         '{node_sass_bin} --output-style expanded {paths} "{infile}" > "{outfile}" && '
-        '{postcss_bin} --use "{node_modules}/autoprefixer" '
-        '--autoprefixer.browsers "{autoprefixer_browsers}" -r "{outfile}"'
+        '{postcss_bin} --use "%(autoprefixer)s" '
+        '--autoprefixer.browsers "{autoprefixer_browsers}" -r "{outfile}"' % 
+        {'autoprefixer': os.path.join(NODE_MODULES, 'autoprefixer')}
     ))
 
     # browserify executable
     BROWSERIFY_BIN = getattr(
         settings,
         'COMPRESS_BROWSERIFY_BIN',
-        join_path('node_modules', '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
+        os.path.join('node_modules', '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
     
     BABELIFY_BIN = getattr(
         settings,
         'COMPRESS_BABELIFY_BIN',
-        join_path('node_modules', '.bin', 'babelify') if LOCAL_NPM_INSTALL else 'babelify'
+        os.path.join('node_modules', '.bin', 'babelify') if LOCAL_NPM_INSTALL else 'babelify'
     )
     
     BABEL_PRESET_ES2015_BIN = getattr(
         settings,
         'COMPRESS_BABEL_PRESET_2015_BIN',
-        join_path(NODE_MODULES, 'babel-preset-es2015')
+        os.path.join(NODE_MODULES, 'babel-preset-es2015')
     )
     
     # Custom ES6 transpiler command
     ES6_COMPILER_CMD = getattr(settings, 'COMPRESS_ES6_COMPILER_CMD', (
         'export NODE_PATH="{paths}" && '
         '{browserify_bin} "{infile}" -o "{outfile}" '
-        '-t [ "%s" --presets="%s" ]' % (BABELIFY_BIN, BABEL_PRESET_ES2015_BIN)
+        '-t [ "%(babelify)s" --presets="%(babel_preset)s" ]' % 
+        {'babelify': BABELIFY_BIN, 'babel_preset': BABEL_PRESET_ES2015_BIN}
     ))
