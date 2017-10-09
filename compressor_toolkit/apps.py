@@ -57,7 +57,7 @@ class CompressorToolkitConfig(AppConfig):
     BABEL_PRESET_ES2015_BIN = getattr(
         settings,
         'COMPRESS_BABEL_PRESET_2015_BIN',
-        os.path.join(NODE_MODULES, 'babel-preset-es2015')
+        os.path.join(NODE_MODULES, '.bin', 'babel-preset-es2015')
     )
     
     # Custom ES6 transpiler command
