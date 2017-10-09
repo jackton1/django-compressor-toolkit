@@ -2,7 +2,7 @@ import os
 
 from django.apps.config import AppConfig
 from django.conf import settings
-
+from .utils import join_path
 
 class CompressorToolkitConfig(AppConfig):
     name = 'compressor_toolkit'
@@ -20,14 +20,14 @@ class CompressorToolkitConfig(AppConfig):
     NODE_SASS_BIN = getattr(
         settings,
         'COMPRESS_NODE_SASS_BIN',
-        'node_modules/.bin/node-sass' if LOCAL_NPM_INSTALL else 'node-sass'
+        join_path('node_modules', '.bin', 'node-sass') if LOCAL_NPM_INSTALL else 'node-sass'
     )
 
     # postcss executable
     POSTCSS_BIN = getattr(
         settings,
         'COMPRESS_POSTCSS_BIN',
-        'node_modules/.bin/postcss' if LOCAL_NPM_INSTALL else 'postcss'
+        join_path('node_modules', '.bin', 'postcss') if LOCAL_NPM_INSTALL else 'postcss'
     )
 
     # Browser versions config for Autoprefixer
@@ -44,12 +44,24 @@ class CompressorToolkitConfig(AppConfig):
     BROWSERIFY_BIN = getattr(
         settings,
         'COMPRESS_BROWSERIFY_BIN',
-        'node_modules/.bin/browserify' if LOCAL_NPM_INSTALL else 'browserify'
+        join_path('node_modules', '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
-
+    
+    BABELIFY_BIN = getattr(
+        settings,
+        'COMPRESS_BABELIFY_BIN',
+        join_path('node_modules', '.bin', 'babelify') if LOCAL_NPM_INSTALL else 'babelify'
+    )
+    
+    BABEL_PRESET_ES2015_BIN = getattr(
+        settings,
+        'COMPRESS_BABEL_PRESET_2015_BIN',
+        join_path(NODE_MODULES, 'babel-preset-es2015')
+    )
+    
     # Custom ES6 transpiler command
     ES6_COMPILER_CMD = getattr(settings, 'COMPRESS_ES6_COMPILER_CMD', (
         'export NODE_PATH="{paths}" && '
         '{browserify_bin} "{infile}" -o "{outfile}" '
-        '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-es2015" ]'
+        '-t [ "%s" --presets="%s" ]' % (BABELIFY_BIN, BABEL_PRESET_ES2015_BIN)
     ))
