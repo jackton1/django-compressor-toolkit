@@ -48,16 +48,16 @@ class CompressorToolkitConfig(AppConfig):
         os.path.join('node_modules', '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
     
-    BABELIFY_BIN = getattr(
+    BABELIFY = getattr(
         settings,
         'COMPRESS_BABELIFY_BIN',
-        os.path.join('node_modules', '.bin', 'babelify') if LOCAL_NPM_INSTALL else 'babelify'
+        os.path.join('node_modules', 'babelify') if LOCAL_NPM_INSTALL else 'babelify'
     )
     
-    BABEL_PRESET_ES2015_BIN = getattr(
+    BABEL_PRESET_ES2015 = getattr(
         settings,
         'COMPRESS_BABEL_PRESET_2015_BIN',
-        os.path.join(NODE_MODULES, '.bin', 'babel-preset-es2015')
+        os.path.join(NODE_MODULES, 'babel-preset-es2015')
     )
     
     # Custom ES6 transpiler command
@@ -65,5 +65,5 @@ class CompressorToolkitConfig(AppConfig):
         'export NODE_PATH="{paths}" && '
         '{browserify_bin} "{infile}" -o "{outfile}" '
         '-t [ "%(babelify)s" --presets="%(babel_preset)s" ]' % 
-        {'babelify': BABELIFY_BIN, 'babel_preset': BABEL_PRESET_ES2015_BIN}
+        {'babelify': BABELIFY, 'babel_preset': BABEL_PRESET_ES2015}
     ))
