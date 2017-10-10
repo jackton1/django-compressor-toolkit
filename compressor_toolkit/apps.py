@@ -2,7 +2,7 @@ import os
 
 from django.apps.config import AppConfig
 from django.conf import settings
-from .utils import join_path
+
 
 class CompressorToolkitConfig(AppConfig):
     name = 'compressor_toolkit'
