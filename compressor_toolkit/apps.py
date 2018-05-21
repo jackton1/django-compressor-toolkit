@@ -13,7 +13,7 @@ class CompressorToolkitConfig(AppConfig):
     NODE_MODULES = getattr(
         settings,
         'COMPRESS_NODE_MODULES',
-        os.path.abspath('node_modules') if LOCAL_NPM_INSTALL else '/usr/lib/node_modules'
+        os.path.abspath('node_modules') if LOCAL_NPM_INSTALL else os.path.join('usr', 'lib', 'node_modules')
     )
 
     # node-sass executable
@@ -52,5 +52,8 @@ class CompressorToolkitConfig(AppConfig):
     ES6_COMPILER_CMD = getattr(settings, 'COMPRESS_ES6_COMPILER_CMD', (
         'export NODE_PATH="{paths}" && '
         '{browserify_bin} "{infile}" -o "{outfile}" '
-        '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-es2015" ]'
+        '-t [ "{}" --presets="{}" ]'.format(
+            os.path.join(NODE_MODULES, 'babelify'), 
+            os.path.join(NODE_MODULES, 'babel-preset-es2015'),
+        )
     ))
