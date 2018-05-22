@@ -32,13 +32,13 @@ class CompressorToolkitConfig(AppConfig):
 
     # Browser versions config for Autoprefixer
     AUTOPREFIXER_BROWSERS = getattr(settings, 'COMPRESS_AUTOPREFIXER_BROWSERS', 'ie >= 9, > 5%')
+    AUTOPREFIXER_DIR = os.path.join(NODE_MODULES, 'autoprefixer')
 
     # Custom SCSS transpiler command
     SCSS_COMPILER_CMD = getattr(settings, 'COMPRESS_SCSS_COMPILER_CMD', (
         '{node_sass_bin} --output-style expanded {paths} "{infile}" > "{outfile}" && '
-        '{postcss_bin} --use "%(autoprefixer)s" '
-        '--autoprefixer.browsers "{autoprefixer_browsers}" -r "{outfile}"' % 
-        {'autoprefixer': os.path.join(NODE_MODULES, 'autoprefixer')}
+        '{postcss_bin} --use "' + AUTOPREFIXER_DIR + '" '
+        '--autoprefixer.browsers "{autoprefixer_browsers}" -r "{outfile}"'
     ))
 
     # browserify executable
