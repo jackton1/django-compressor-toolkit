@@ -32,12 +32,11 @@ class CompressorToolkitConfig(AppConfig):
 
     # Browser versions config for Autoprefixer
     AUTOPREFIXER_BROWSERS = getattr(settings, 'COMPRESS_AUTOPREFIXER_BROWSERS', 'ie >= 9, > 5%')
-    AUTOPREFIXER_DIR = os.path.join(NODE_MODULES, 'autoprefixer')
 
     # Custom SCSS transpiler command
     SCSS_COMPILER_CMD = getattr(settings, 'COMPRESS_SCSS_COMPILER_CMD', (
         '{node_sass_bin} --output-style expanded {paths} "{infile}" > "{outfile}" && '
-        '{postcss_bin} --use "' + AUTOPREFIXER_DIR + '" '
+        '{postcss_bin} --use "{node_modules}/autoprefixer" '
         '--autoprefixer.browsers "{autoprefixer_browsers}" -r "{outfile}"'
     ))
 
@@ -48,12 +47,9 @@ class CompressorToolkitConfig(AppConfig):
         os.path.join(NODE_MODULES, '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
     
-    BABELIFY_DIR = os.path.join(NODE_MODULES, 'babelify')
-    PRESET = os.path.join(NODE_MODULES, 'babel-preset-es2015')
-    
     # Custom ES6 transpiler command
     ES6_COMPILER_CMD = getattr(settings, 'COMPRESS_ES6_COMPILER_CMD', (
         'export NODE_PATH="{paths}" && '
         '{browserify_bin} "{infile}" -o "{outfile}" '
-        '-t [ "' + BABELIFY_DIR + '" --presets="' + PRESET + '" ]'
+        '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-es2015" ]'
     ))
