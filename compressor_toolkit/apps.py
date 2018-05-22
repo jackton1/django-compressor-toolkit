@@ -20,14 +20,14 @@ class CompressorToolkitConfig(AppConfig):
     NODE_SASS_BIN = getattr(
         settings,
         'COMPRESS_NODE_SASS_BIN',
-        os.path.join('node_modules', '.bin', 'node-sass') if LOCAL_NPM_INSTALL else 'node-sass'
+        os.path.join(NODE_MODULES, '.bin', 'node-sass') if LOCAL_NPM_INSTALL else 'node-sass'
     )
 
     # postcss executable
     POSTCSS_BIN = getattr(
         settings,
         'COMPRESS_POSTCSS_BIN',
-        os.path.join('node_modules', '.bin', 'postcss') if LOCAL_NPM_INSTALL else 'postcss'
+        os.path.join(NODE_MODULES, '.bin', 'postcss') if LOCAL_NPM_INSTALL else 'postcss'
     )
 
     # Browser versions config for Autoprefixer
@@ -45,7 +45,7 @@ class CompressorToolkitConfig(AppConfig):
     BROWSERIFY_BIN = getattr(
         settings,
         'COMPRESS_BROWSERIFY_BIN',
-        os.path.join('node_modules', '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
+        os.path.join(NODE_MODULES, '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
     
     BABELIFY_DIR = os.path.join(NODE_MODULES, 'babelify')
