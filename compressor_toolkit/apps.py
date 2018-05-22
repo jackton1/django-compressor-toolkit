@@ -46,7 +46,7 @@ class CompressorToolkitConfig(AppConfig):
         'COMPRESS_BROWSERIFY_BIN',
         os.path.join(NODE_MODULES, '.bin', 'browserify') if LOCAL_NPM_INSTALL else 'browserify'
     )
-    
+
     # Custom ES6 transpiler command
     ES6_COMPILER_CMD = getattr(settings, 'COMPRESS_ES6_COMPILER_CMD', (
         'export NODE_PATH="{paths}" && '
